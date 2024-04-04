@@ -1,32 +1,27 @@
+import { useSelector } from "react-redux"
 import BagItem from "../components/BagItem"
 import BagSummary from "../components/BagSummary"
 
 
 const Bag=()=>{
 
-  const item={
 
-    id: '002',
-    image: 'images/2.jpg',
-    company: 'CUKOO',
-    item_name: 'Women Padded Halter Neck Swimming Dress',
-    original_price: 2599,
-    current_price: 1507,
-    discount_percentage: 42,
-    return_period: 14,
-    delivery_date: '10 Oct 2023',
-    rating: {
-        stars: 4.3,
-        count: 24,
-    }
-  }
+  
+  const bagItems=useSelector(state=>state.bag)
+  const items=useSelector(state=>state.items)
+  const finalItems=items.filter(item=>{
+    const itemIndex=bagItems.indexOf(item.id)
+    return itemIndex>=0
+  })
 
 
 
     return <main>
       <div className="bag-page">
         <div className="bag-items-container">
-        <BagItem item={item}/>
+
+          {finalItems.map(item=><BagItem item={item}/>)}
+        
 
           
         </div>

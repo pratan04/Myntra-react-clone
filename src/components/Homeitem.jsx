@@ -1,6 +1,30 @@
+import { useDispatch, useSelector } from "react-redux"
+import { bagActions } from "../store/bagSlice"
+
 const Homeitem=({item})=>{
-    return <>
+    const bagItems=useSelector(store=>store.bag)
+        
+    const dispatch=useDispatch()
+
+    const elementFound=bagItems.indexOf(item.id)>=0
     
+    const handleRemoveItems=()=>{
+        dispatch(bagActions.deleteFromBag(item.id))
+        
+        
+
+    }
+    
+    const handleBagItems=()=>{
+        dispatch(bagActions.addToBag(item.id))
+
+        
+    }
+
+
+    return <>
+
+
     <div className="item-container">
       <img className="item-image" src={item.image} alt="item image"/>
       <div className="rating">
@@ -13,8 +37,10 @@ const Homeitem=({item})=>{
           <span className="original-price">Rs {item.original_price}</span>
           <span className="discount">({item.discount_percentage}% OFF)</span>
       </div>
-      <button className="btn-add-bag" onclick={()=> console.log("item was clicked")}>Add to Bag</button>
-    </div>`
+    {elementFound?<button type="button" className="btn btn-danger btn-add-bag" onClick={handleRemoveItems}>remove</button>:<button type="button" className="btn-add-bag" onClick={handleBagItems} >Add to Bag</button>}
+      
+
+    </div>
     </>
 }
 

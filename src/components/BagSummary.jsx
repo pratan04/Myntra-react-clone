@@ -1,43 +1,61 @@
-const BagSummary=({})=>{
+import { useSelector } from "react-redux"
 
-    const BagSummary={
-        totalItem:"5",
-        price:"3000",
-        discount:"30%",
-        fee:"200",
-        amount:"4000"
-    }
+const BagSummary=()=>{
 
 
+    const items=useSelector(state=>state.items)
+    const bagItems=useSelector(state=>state.bag)
+    const finalItems=items.filter(item=>{
+      const itemIndex=bagItems.indexOf(item.id)
+      return itemIndex>=0
+    })
 
+const CONVENIENCE_FEES=99
+    let totalItem =bagItems.length;
+  let totalMRP = 0;
+  let totalDiscount = 0;
+
+   finalItems.forEach((cartItem) => {
+    totalMRP += cartItem.original_price;
+    totalDiscount += cartItem.original_price - cartItem.current_price;
+  });
+
+  let finalPayment = totalMRP - totalDiscount + CONVENIENCE_FEES;
+
+    
+
+
+    
+    
 
     return <div className="bag-summary">
         
-     <div class="bag-details-container">
-    <div class="price-header">PRICE DETAILS ({BagSummary.totalItem} Items) </div>
-    <div class="price-item">
-      <span class="price-item-tag">Total MRP</span>
-      <span class="price-item-value">₹{BagSummary.price}</span>
-    </div>
-    <div class="price-item">
-      <span class="price-item-tag">Discount on MRP</span>
-      <span class="price-item-value priceDetail-base-discount">-₹{BagSummary.discount}</span>
-    </div>
-    <div class="price-item">
-      <span class="price-item-tag">Convenience Fee</span>
-      <span class="price-item-value">{BagSummary.fee}</span>
-    </div>
-    <hr/>
-    <div class="price-footer">
-      <span class="price-item-tag">Total Amount</span>
-      <span class="price-item-value">₹{BagSummary.amount}</span>
-    </div>
-  </div>
-  <button class="btn-place-order">
-    <div class="css-xjhrni">PLACE ORDER</div>
-  </button>
-    
-  </div>
+    <div class="bag-details-container">
+   <div class="price-header">PRICE DETAILS ({totalItem} Items) </div>
+   <div class="price-item">
+     <span class="price-item-tag">Total MRP</span>
+     <span class="price-item-value">₹{totalMRP}</span>
+   </div>
+   <div class="price-item">
+     <span class="price-item-tag">Discount on MRP</span>
+     <span class="price-item-value priceDetail-base-discount">-₹{totalDiscount}</span>
+   </div>
+   <div class="price-item">
+     <span class="price-item-tag">Convenience Fee</span>
+     <span class="price-item-value">{CONVENIENCE_FEES}</span>
+   </div>
+   <hr/>
+   <div class="price-footer">
+     <span class="price-item-tag">Total Amount</span>
+     <span class="price-item-value">₹{finalPayment}</span>
+   </div>
+ </div>
+ <button class="btn-place-order">
+   <div class="css-xjhrni">PLACE ORDER</div>
+ </button>
+   
+ </div>
+
 }
 
 export default BagSummary
